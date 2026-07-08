@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <aside class="dashboard-sidebar">
+            <div class="dashboard-brand">
+                <span class="material-symbols-rounded" style="color: var(--color-primary); font-size: 18px;">terminal</span>
+                <span class="logo">BHF</span>
+            </div>
+            <nav class="dashboard-nav">
+                <a href="#" class="dashboard-nav-item active">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">account_tree</span>
+                    <span>Hardware Sensor Tree</span>
+                </a>
+            </nav>
+        </aside>
+
+        <div class="dashboard-main">
+            
+            <header class="dashboard-header">
+                <div class="dashboard-header-content">
+                    <h1 class="dashboard-header-title">Monitoring Sheet</h1>
+                </div>
+                <div class="dashboard-header-actions">
+                    <div class="theme-toggle" id="theme-toggle">
+                        <span class="material-symbols-rounded theme-option active" data-theme="light" style="font-size: 16px; padding: 4px;">light_mode</span>
+                        <span class="material-symbols-rounded theme-option" data-theme="dark" style="font-size: 16px; padding: 4px;">dark_mode</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card" id="card-all" style="cursor: pointer;">
+                    <span class="stat-card-title">Active Devices</span>
+                    <span class="stat-card-value" id="totalPCs">0</span>
+                </div>
+                <div class="stat-card" id="card-healthy" style="cursor: pointer; border-bottom: 2px solid var(--color-success);">
+                    <span class="stat-card-title">Normal</span>
+                    <span class="stat-card-value" id="healthyCount" style="color: var(--color-success);">0</span>
+                </div>
+                <div class="stat-card" id="card-warning" style="cursor: pointer; border-bottom: 2px solid var(--color-warning);">
+                    <span class="stat-card-title">Warning</span>
+                    <span class="stat-card-value" id="warningCount" style="color: var(--color-warning);">0</span>
+                </div>
+                <div class="stat-card" id="card-critical" style="cursor: pointer; border-bottom: 2px solid var(--color-error);">
+                    <span class="stat-card-title">Critical Drops</span>
+                    <span class="stat-card-value" id="criticalCount" style="color: var(--color-error);">0</span>
+                </div>
+            </div>
+
+            <div class="controls-bar">
+                <input type="text" id="searchInput" class="form-input" placeholder="Filter by Node ID / User..." style="width: 240px;">
+                <select id="branchFilter" class="form-input">
+                    <option value="">All Branches</option>
+                    <option value="217 Residence">217 Residence</option>
+                    <option value="Pawnshop Bonifacio">Pawnshop Bonifacio</option>
+                    <option value="Pawnshop Kayang">Pawnshop Kayang</option>
+                    <option value="Pawnshop La Trinidad">Pawnshop La Trinidad</option>
+                    <option value="Lemon &amp; Olive">Lemon &amp; Olive</option>
+                </select>
+                <div id="activeFilterBadge" style="margin-left: auto; display: flex; align-items: center; font-size: 11px; color: var(--color-text-secondary); font-family: monospace;">
+                    Hardware Diagnostics Matrix // Live Device Registers
+                </div>
+            </div>
+
+            <div id="analyticsGraphsContainer"></div>
+
+            <div style="display: none;">
+                <table id="monitorTable">
+                    <tbody>
+                        <tr><td>217 Residence</td><td>RES-PC-01</td><td>Alice Smith</td><td>98%</td><td>500GB</td><td>120GB</td><td>380GB</td><td>Healthy Sector Normal</td><td>45°C</td><td>38°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>217 Residence</td><td>RES-PC-02</td><td>Markus Vance</td><td>91%</td><td>500GB</td><td>465GB</td><td>35GB</td><td>Healthy Sector Normal</td><td>52°C</td><td>41°C</td><td>Working</td><td>warning</td></tr>
+                        <tr><td>217 Residence</td><td>RES-PC-03</td><td>Alvin Lets</td><td>40%</td><td>500GB</td><td>200GB</td><td>300GB</td><td>Healthy Sector Normal</td><td>40°C</td><td>35°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>217 Residence</td><td>RES-PC-04</td><td>Jayson James</td><td>55%</td><td>500GB</td><td>275GB</td><td>225GB</td><td>Healthy Sector Normal</td><td>42°C</td><td>36°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>217 Residence</td><td>RES-PC-05</td><td>Bron Yap</td><td>10%</td><td>500GB</td><td>480GB</td><td>20GB</td><td>Storage Near Full</td><td>48°C</td><td>39°C</td><td>Working</td><td>warning</td></tr>
+
+                        <tr><td>Pawnshop Bonifacio</td><td>BON-PC-01</td><td>John Doe</td><td>74%</td><td>1000GB</td><td>910GB</td><td>90GB</td><td>Cluster Bad Blocks Detected</td><td>86°C</td><td>52°C</td><td>Working</td><td>warning</td></tr>
+                        <tr><td>Pawnshop Bonifacio</td><td>BON-PC-02</td><td>Cassandra Fox</td><td>99%</td><td>500GB</td><td>80GB</td><td>420GB</td><td>Healthy Sector Normal</td><td>38°C</td><td>32°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop Bonifacio</td><td>BON-PC-03</td><td>Lix</td><td>60%</td><td>1000GB</td><td>500GB</td><td>500GB</td><td>Healthy Sector Normal</td><td>41°C</td><td>34°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop Bonifacio</td><td>BON-PC-04</td><td>Six</td><td>30%</td><td>1000GB</td><td>800GB</td><td>200GB</td><td>Healthy Sector Normal</td><td>44°C</td><td>37°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop Bonifacio</td><td>BON-PC-05</td><td>Rey</td><td>5%</td><td>1000GB</td><td>980GB</td><td>20GB</td><td>Critical: Storage Full</td><td>50°C</td><td>40°C</td><td>Working</td><td>critical</td></tr>
+
+                        <tr><td>Pawnshop Kayang</td><td>KYG-PC-01</td><td>Sarah</td><td>12%</td><td>250GB</td><td>246GB</td><td>4GB</td><td>Critical Sector Degradation</td><td>94°C</td><td>65°C</td><td>Malfunction</td><td>critical</td></tr>
+                        <tr><td>Pawnshop Kayang</td><td>KYG-PC-02</td><td>Connor</td><td>85%</td><td>250GB</td><td>100GB</td><td>150GB</td><td>Healthy Sector Normal</td><td>40°C</td><td>33°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop Kayang</td><td>KYG-PC-03</td><td>Mark</td><td>88%</td><td>250GB</td><td>120GB</td><td>130GB</td><td>Healthy Sector Normal</td><td>41°C</td><td>34°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop Kayang</td><td>KYG-PC-04</td><td>Ross</td><td>90%</td><td>250GB</td><td>200GB</td><td>50GB</td><td>Healthy Sector Normal</td><td>42°C</td><td>35°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop Kayang</td><td>KYG-PC-05</td><td>Aedrian</td><td>95%</td><td>250GB</td><td>240GB</td><td>10GB</td><td>Storage Near Full</td><td>45°C</td><td>38°C</td><td>Working</td><td>warning</td></tr>
+
+                        <tr><td>Pawnshop La Trinidad</td><td>LT-PC-01</td><td>Bob</td><td>100%</td><td>500GB</td><td>210GB</td><td>290GB</td><td>Healthy Sector Normal</td><td>39°C</td><td>34°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop La Trinidad</td><td>LT-PC-02</td><td>Mikey</td><td>70%</td><td>500GB</td><td>300GB</td><td>200GB</td><td>Healthy Sector Normal</td><td>40°C</td><td>35°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop La Trinidad</td><td>LT-PC-03</td><td>Williams</td><td>75%</td><td>500GB</td><td>350GB</td><td>150GB</td><td>Healthy Sector Normal</td><td>41°C</td><td>36°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop La Trinidad</td><td>LT-PC-04</td><td>L.A</td><td>80%</td><td>500GB</td><td>400GB</td><td>100GB</td><td>Healthy Sector Normal</td><td>42°C</td><td>37°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Pawnshop La Trinidad</td><td>LT-PC-05</td><td>Scottie</td><td>82%</td><td>500GB</td><td>450GB</td><td>50GB</td><td>Healthy Sector Normal</td><td>43°C</td><td>38°C</td><td>Working</td><td>healthy</td></tr>
+
+                        <tr><td>Lemon &amp; Olive</td><td>LMN-PC-01</td><td>Elena</td><td>89%</td><td>1000GB</td><td>410GB</td><td>590GB</td><td>Healthy Sector Normal</td><td>42°C</td><td>37°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Lemon &amp; Olive</td><td>LMN-PC-02</td><td>Pearl</td><td>92%</td><td>1000GB</td><td>500GB</td><td>500GB</td><td>Healthy Sector Normal</td><td>43°C</td><td>38°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Lemon &amp; Olive</td><td>LMN-PC-03</td><td>White</td><td>94%</td><td>1000GB</td><td>600GB</td><td>400GB</td><td>Healthy Sector Normal</td><td>44°C</td><td>39°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Lemon &amp; Olive</td><td>LMN-PC-04</td><td>Gay</td><td>96%</td><td>1000GB</td><td>700GB</td><td>300GB</td><td>Healthy Sector Normal</td><td>45°C</td><td>40°C</td><td>Working</td><td>healthy</td></tr>
+                        <tr><td>Lemon &amp; Olive</td><td>LMN-PC-05</td><td>ED</td><td>98%</td><td>1000GB</td><td>950GB</td><td>50GB</td><td>Storage Near Full</td><td>48°C</td><td>42°C</td><td>Working</td><td>warning</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Live PC Detail Modal: opens when a PC card is clicked -->
+    <div class="pc-modal-overlay" id="pcModalOverlay">
+        <div class="pc-modal-card">
+            <button class="pc-modal-close" id="pcModalCloseBtn" aria-label="Close live dashboard">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+            <div id="pcModalBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
